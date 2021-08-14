@@ -14,8 +14,6 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly roleService: RoleService,
-    @InjectRepository(Role)
-    private readonly roleRepository: Repository<Role>,
   ) {}
 
   getAllUsers(): Promise<User[]> {
