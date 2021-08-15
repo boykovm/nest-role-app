@@ -6,7 +6,7 @@ import {
   Param,
   Patch,
   Post,
-  Res,
+  Res, UseGuards,
 } from '@nestjs/common';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
@@ -16,6 +16,7 @@ import { User } from './entities/user.entiti';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Role } from '../role/entities/role.entiti';
 import { Response } from 'express';
+import { ApiKeyGuard } from '../shared/guards/api-key.guard';
 
 @Controller('user')
 export class UserController {
@@ -64,5 +65,12 @@ export class UserController {
   @Get('role/:id')
   async getUserRole(@Param('id') id: string): Promise<Role> {
     return await this.userService.getUserRole(id);
+  }
+
+  @Get('for-admin/:id')
+  @UseGuards(ApiKeyGuard)
+  async adminHello(@Param('id') id: string) {
+    const role: Role = await this.userService.getUserRole(id);
+    return 'hello admin';
   }
 }

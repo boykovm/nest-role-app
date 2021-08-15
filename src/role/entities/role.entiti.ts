@@ -18,7 +18,7 @@ export class Role {
   @Column()
   name: string;
 
-  @OneToMany((type) => User, (user: User) => user.uuid)
+  @OneToMany(() => User, (user: User) => user.uuid)
   users: User[];
 
   @ManyToMany(() => Permission)
