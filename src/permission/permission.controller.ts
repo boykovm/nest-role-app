@@ -3,9 +3,10 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   Patch,
-  Post,
+  Post, Res,
 } from '@nestjs/common';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
@@ -13,6 +14,7 @@ import { PermissionService } from './permission.service';
 import { Permission } from './entities/permission.entiti';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
+import { Response } from 'express';
 
 @Controller('permission')
 export class PermissionController {
@@ -24,8 +26,13 @@ export class PermissionController {
   }
 
   @Get(':id')
-  async getById(@Param('id') id: string): Promise<Permission> {
-    return await this.permissionService.getPermissionById(id);
+  async getById(@Param('id') id: string, @Res() res: Response): Promise<Response> {
+    const permission: Permission =
+      await this.permissionService.getPermissionById(id);
+    if (!permission) {
+      return res.sendStatus(404);
+    }
+    return res.send(permission);
   }
 
   @Post()
@@ -36,6 +43,7 @@ export class PermissionController {
   }
 
   @Patch(':id')
+  @HttpCode(204)
   async updatePermission(
     @Param('id') id: string,
     @Body() updatePermissionDto: UpdatePermissionDto,

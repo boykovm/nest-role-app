@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Res,
 } from '@nestjs/common';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
@@ -14,6 +15,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entiti';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Role } from '../role/entities/role.entiti';
+import { Response } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -25,8 +27,15 @@ export class UserController {
   }
 
   @Get(':id')
-  async getuserById(@Param('id') id: string): Promise<User> {
-    return await this.userService.getUserById(id);
+  async getUserById(
+    @Param('id') id: string,
+    @Res() res: Response,
+  ): Promise<Response> {
+    const user: User = await this.userService.getUserById(id);
+    if (!user) {
+      return res.sendStatus(404);
+    }
+    return res.send(user);
   }
 
   @Post()
