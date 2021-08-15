@@ -1,8 +1,8 @@
-import { IsString } from 'class-validator';
+import { IsEnum } from 'class-validator';
 
 import { Permissions } from '../../shared/constants';
 
 export class CreatePermissionDto {
-  @IsString()
+  @IsEnum(Permissions)
   permission: Permissions;
 }
