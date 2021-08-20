@@ -6,7 +6,8 @@ import {
   HttpCode,
   Param,
   Patch,
-  Post, Res,
+  Post,
+  Res,
 } from '@nestjs/common';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
@@ -26,7 +27,10 @@ export class PermissionController {
   }
 
   @Get(':id')
-  async getById(@Param('id') id: string, @Res() res: Response): Promise<Response> {
+  async getById(
+    @Param('id') id: string,
+    @Res() res: Response,
+  ): Promise<Response> {
     const permission: Permission =
       await this.permissionService.getPermissionById(id);
     if (!permission) {

@@ -6,7 +6,8 @@ import {
   Param,
   Patch,
   Post,
-  Res, UseGuards,
+  Res,
+  UseGuards,
 } from '@nestjs/common';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
